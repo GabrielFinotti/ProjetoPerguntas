@@ -1,5 +1,5 @@
 {
-  "name": "projeto_perguntas",
+  "name": "Projeto Perguntas",
   "version": "1.0.0",
   "description": "A new Flutter project.",
   "main": "index.js",
@@ -8,7 +8,10 @@
   },
   "scripts": {
     "commit": "cz",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "format:prettier": "prettier --write \"**/*.{js,json,md,yaml,yml}\"",
+    "format:dart": "dart format lib/",
+    "format": "npm run format:prettier && npm run format:dart"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +20,10 @@
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
-    "husky": "^8.0.0"
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^8.0.0",
+    "prettier": "^3.2.4"
   },
   "config": {
     "commitizen": {

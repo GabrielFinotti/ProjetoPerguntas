@@ -1,0 +1,21 @@
+# Arquivos gerados
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+*.g.dart
+*.freezed.dart
+
+# Dependências
+node_modules/
+pubspec.lock
+
+# Arquivos de IDE
+.idea/
+.vscode/
+*.iml
+
+# Outros
+.DS_Store
+*.log 
