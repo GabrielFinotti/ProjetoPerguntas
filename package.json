@@ -7,7 +7,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "commit": "cz",
+    "commit": "git-cz",
     "prepare": "husky install",
     "format:prettier": "prettier --write \"**/*.{js,json,md,yaml,yml}\"",
     "format:dart": "dart format lib/",
@@ -27,7 +27,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog"
+      "path": "./node_modules/cz-conventional-changelog"
     }
   }
 }
