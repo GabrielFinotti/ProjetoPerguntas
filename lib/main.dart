@@ -12,7 +12,8 @@ class PerguntaApp extends StatefulWidget {
 }
 
 class _PerguntaAppState extends State<PerguntaApp> {
-  int selectedQuestion = 0;
+  int _selectedQuestion = 0;
+  bool _showResult = false;
 
   final List<Map<String, Object>> questions = [
     {
@@ -29,28 +30,22 @@ class _PerguntaAppState extends State<PerguntaApp> {
     },
   ];
 
-  final List<Map<String, Object>> result = [];
+  final List<Map<String, Object>> _result = [];
 
   void _responder(String selectedAnswer) {
-    result.add({
-      'question': questions[selectedQuestion]['text'] as String,
+    _result.add({
+      'question': questions[_selectedQuestion]['text'] as String,
       'answer': selectedAnswer,
     });
 
-    if (selectedQuestion < questions.length - 1) {
+    if (_selectedQuestion < questions.length - 1) {
       setState(() {
-        selectedQuestion++;
+        _selectedQuestion++;
       });
     } else {
-      for (var i = 0; i < result.length; i++) {
-        debugPrint('Pergunta ${i + 1}: ${result[i]['question']}');
-        debugPrint('Resposta: ${result[i]['answer']}');
-      }
-
-      result.clear();
-
       setState(() {
-        selectedQuestion = 0;
+        _selectedQuestion = 0;
+        _showResult = true;
       });
     }
   }
@@ -59,13 +54,83 @@ class _PerguntaAppState extends State<PerguntaApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text("Perguntas e Respostas")),
+        appBar: AppBar(
+          title: Text(
+            "Perguntas e Respostas",
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+        ),
         body: Column(
           children: [
-            Question(questions[selectedQuestion]['text'] as String),
-            ...(questions[selectedQuestion]['answers'] as List<String>).map(
-              (answer) => Response(answer, () => _responder(answer)),
+            SizedBox(height: 20),
+            Question(questions[_selectedQuestion]['text'] as String),
+            SizedBox(height: 20),
+            Column(
+              spacing: 8,
+              children: [
+                ...(questions[_selectedQuestion]['answers'] as List<String>)
+                    .map(
+                      (answer) => Response(
+                        answer,
+                        () => _showResult ? null : _responder(answer),
+                      ),
+                    ),
+              ],
             ),
+            SizedBox(height: 20),
+            if (_showResult)
+              Column(
+                spacing: 10,
+                children: [
+                  ..._result.asMap().entries.map(
+                    (entry) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          child: Text(
+                            'Pergunta ${entry.key + 1}: ${entry.value['question']}',
+                            style: TextStyle(fontSize: 18),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          child: Text(
+                            'Resposta: ${entry.value['answer']}',
+                            style: TextStyle(fontSize: 16),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _showResult = false;
+                          _result.clear();
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
+                      ),
+                      child: Text("Reiniciar"),
+                    ),
+                  ),
+                ],
+              ),
           ],
         ),
       ),

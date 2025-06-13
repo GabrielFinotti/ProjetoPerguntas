@@ -2,20 +2,23 @@ import 'package:flutter/material.dart';
 
 class Response extends StatelessWidget {
   final String text;
-  final void Function() onPressed;
+  final VoidCallback? onPressed;
 
   const Response(this.text, this.onPressed, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 40),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blue,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-          textStyle: TextStyle(color: Colors.white),
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+          ),
         ),
         child: Text(text),
       ),
